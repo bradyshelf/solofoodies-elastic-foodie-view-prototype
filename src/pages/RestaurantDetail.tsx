@@ -15,8 +15,8 @@ const RestaurantDetail = () => {
     id: restaurantId,
     name: "Restaurante de Don Juan",
     images: [
-      "/lovable-uploads/ac468fcd-a778-4887-97c9-2cb092c93be6.png",
-      "/lovable-uploads/0a87be8f-fde5-4491-a9be-6a03421cb23a.png"
+      "/lovable-uploads/115bc3d6-61b7-4973-a9a7-63d6ac2f7584.png",
+      "/lovable-uploads/115bc3d6-61b7-4973-a9a7-63d6ac2f7584.png"
     ],
     campaign: {
       type: "PÚBLICA",
