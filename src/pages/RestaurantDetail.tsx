@@ -14,115 +14,138 @@ const RestaurantDetail = () => {
   const restaurant = {
     id: restaurantId,
     name: "Restaurante de Don Juan",
-    image: "/lovable-uploads/ac468fcd-a778-4887-97c9-2cb092c93be6.png",
-    rating: 4.8,
-    reviews: 324,
-    cuisine: "Mediterranean",
-    location: "Downtown Barcelona",
-    hours: "11:00 AM - 11:00 PM",
-    description: "Authentic Mediterranean cuisine with a modern twist. Experience the finest ingredients and traditional recipes passed down through generations.",
-    specialties: ["Paella Valenciana", "Grilled Octopus", "Jamón Ibérico", "Sangria"],
-    priceRange: "€€€",
-    features: ["Outdoor Seating", "Wine Bar", "Live Music", "Private Events"]
+    images: [
+      "/lovable-uploads/ac468fcd-a778-4887-97c9-2cb092c93be6.png",
+      "/lovable-uploads/0a87be8f-fde5-4491-a9be-6a03421cb23a.png"
+    ],
+    campaign: {
+      type: "PÚBLICA",
+      startDate: "08/12/21",
+      endDate: "27/12/21",
+      daysAvailable: ["L", "V", "X", "J", "V", "S", "D"],
+      companions: 3,
+      price: "50€",
+      spotsRemaining: 3
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="relative">
-        <img 
-          src={restaurant.image} 
-          alt={restaurant.name}
-          className="w-full h-64 object-cover"
-        />
+        <div className="grid grid-cols-2 gap-1">
+          <img 
+            src={restaurant.images[0]} 
+            alt={restaurant.name}
+            className="w-full h-48 object-cover"
+          />
+          <img 
+            src={restaurant.images[1]} 
+            alt={restaurant.name}
+            className="w-full h-48 object-cover"
+          />
+        </div>
+        
+        {/* Back button overlay */}
         <div className="absolute top-4 left-4">
           <Button
             onClick={handleBack}
-            className="bg-black/50 hover:bg-black/70 text-white rounded-full p-2"
-            size="sm"
+            variant="ghost"
+            className="text-white hover:bg-black/20 p-2 h-auto"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            <span className="font-medium">ATRÁS</span>
           </Button>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
-          <h1 className="text-3xl font-bold text-white mb-2">{restaurant.name}</h1>
-          <div className="flex items-center space-x-4 text-white/90">
-            <div className="flex items-center space-x-1">
-              <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-              <span>{restaurant.rating}</span>
-              <span>({restaurant.reviews} reviews)</span>
-            </div>
-            <span>•</span>
-            <span>{restaurant.cuisine}</span>
-            <span>•</span>
-            <span>{restaurant.priceRange}</span>
-          </div>
+
+        {/* Restaurant name overlay */}
+        <div className="absolute bottom-4 left-4">
+          <h1 className="text-xl font-bold text-white drop-shadow-lg">
+            {restaurant.name}
+          </h1>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="max-w-4xl mx-auto p-6 space-y-8">
-        {/* Basic Info */}
-        <div className="bg-white rounded-lg p-6 shadow-sm">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <MapPin className="w-5 h-5 text-gray-400" />
-                <span className="text-gray-700">{restaurant.location}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Clock className="w-5 h-5 text-gray-400" />
-                <span className="text-gray-700">{restaurant.hours}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Users className="w-5 h-5 text-gray-400" />
-                <span className="text-gray-700">Suitable for groups</span>
-              </div>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Description</h3>
-              <p className="text-gray-600 leading-relaxed">{restaurant.description}</p>
-            </div>
+      {/* Campaign Details */}
+      <div className="p-6 space-y-6">
+        {/* Campaign Type and Price */}
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="inline-block bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">
+              {restaurant.campaign.type}
+            </span>
+          </div>
+          <div className="text-2xl font-bold text-gray-900">
+            {restaurant.campaign.price}
           </div>
         </div>
 
-        {/* Specialties */}
-        <div className="bg-white rounded-lg p-6 shadow-sm">
-          <h3 className="font-semibold text-gray-900 mb-4">Signature Dishes</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {restaurant.specialties.map((specialty, index) => (
-              <div key={index} className="bg-gray-50 rounded-lg p-3 text-center">
-                <span className="text-sm font-medium text-gray-700">{specialty}</span>
+        {/* Campaign Dates */}
+        <div className="space-y-2">
+          <div className="text-sm text-gray-600">
+            Del {restaurant.campaign.startDate} al {restaurant.campaign.endDate}
+          </div>
+          
+          {/* Days of the week */}
+          <div className="flex space-x-2">
+            {restaurant.campaign.daysAvailable.map((day, index) => (
+              <div 
+                key={index}
+                className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-700"
+              >
+                {day}
               </div>
             ))}
           </div>
         </div>
 
-        {/* Features */}
-        <div className="bg-white rounded-lg p-6 shadow-sm">
-          <h3 className="font-semibold text-gray-900 mb-4">Features & Amenities</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {restaurant.features.map((feature, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-gray-600">{feature}</span>
-              </div>
-            ))}
-          </div>
+        {/* Companions */}
+        <div className="flex items-center text-gray-600">
+          <Users className="w-4 h-4 mr-2" />
+          <span className="text-sm">+{restaurant.campaign.companions} acompañantes</span>
         </div>
 
-        {/* Action Buttons */}
-        <div className="bg-white rounded-lg p-6 shadow-sm">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Button className="flex-1 bg-yellow-400 hover:bg-yellow-500 text-black font-medium">
-              Start Collaboration
-            </Button>
-            <Button variant="outline" className="flex-1">
-              Save Restaurant
-            </Button>
-            <Button variant="outline" className="flex-1">
-              Share
-            </Button>
+        {/* Collaboration Question */}
+        <div className="text-center space-y-4 py-8">
+          <h2 className="text-lg font-semibold text-gray-900">
+            ¿Quieres colaborar con nosotros?
+          </h2>
+          
+          <Button 
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 rounded-lg text-base"
+            size="lg"
+          >
+            Solicitar colaboración
+          </Button>
+          
+          <p className="text-sm text-green-600 font-medium">
+            ¡Quedan {restaurant.campaign.spotsRemaining} plazas disponibles!
+          </p>
+        </div>
+      </div>
+
+      {/* Bottom Navigation Placeholder */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+        <div className="flex justify-around items-center max-w-md mx-auto">
+          <div className="w-6 h-6 text-gray-400">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </div>
+          <div className="w-6 h-6 text-gray-400">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 21H5V3H13V9H19V21Z"/>
+            </svg>
+          </div>
+          <div className="w-6 h-6 text-gray-400">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 21H5V3H13V9H19V21Z"/>
+            </svg>
+          </div>
+          <div className="w-6 h-6 text-gray-400">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+            </svg>
           </div>
         </div>
       </div>
