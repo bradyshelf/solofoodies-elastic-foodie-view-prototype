@@ -117,9 +117,10 @@ const ChatConversation = () => {
 
   const handleSendOffer = () => {
     if (offerAmount.trim()) {
-      // Disable buttons on previous offers
+      // Disable buttons on previous offers and hide offer options
       setMessages(prev => prev.map(msg => 
-        msg.type === 'offer' ? { ...msg, showButtons: false } : msg
+        msg.type === 'offer' ? { ...msg, showButtons: false } : 
+        msg.showOfferOption ? { ...msg, showOfferOption: false } : msg
       ));
 
       const offerMessage: Message = {
