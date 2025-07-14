@@ -8,6 +8,7 @@ const RestaurantDetail = () => {
   const { restaurantId } = useParams();
 
   const handleBack = () => {
+    console.log('Back button clicked');
     navigate(-1);
   };
 
