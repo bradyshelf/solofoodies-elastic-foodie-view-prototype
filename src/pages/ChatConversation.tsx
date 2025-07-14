@@ -29,12 +29,23 @@ interface Message {
   offerAmount?: number;
   showButtons?: boolean;
   offerStatus?: 'pending' | 'accepted' | 'rejected';
+  image?: string;
+  showOfferOption?: boolean;
 }
 
 const ChatConversation = () => {
   const navigate = useNavigate();
   const { chatId } = useParams();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 1,
+      text: "",
+      isUser: false,
+      timestamp: new Date(Date.now() - 5 * 60 * 1000),
+      image: "/lovable-uploads/ac468fcd-a778-4887-97c9-2cb092c93be6.png",
+      showOfferOption: true
+    }
+  ]);
   const [inputValue, setInputValue] = useState('');
   const [showOfferDialog, setShowOfferDialog] = useState(false);
   const [offerAmount, setOfferAmount] = useState('');
@@ -306,6 +317,23 @@ const ChatConversation = () => {
                           </>
                         )}
                       </div>
+                    )}
+                  </div>
+                ) : message.image ? (
+                  <div className="max-w-[80%] space-y-3">
+                    <img 
+                      src={message.image} 
+                      alt="Restaurant collaboration" 
+                      className="w-full h-auto rounded-lg shadow-sm"
+                    />
+                    {message.showOfferOption && (
+                      <Button 
+                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg px-6 py-3"
+                        onClick={handleMakeOffer}
+                      >
+                        <Euro className="w-4 h-4 mr-2" />
+                        Make an Offer
+                      </Button>
                     )}
                   </div>
                 ) : (
