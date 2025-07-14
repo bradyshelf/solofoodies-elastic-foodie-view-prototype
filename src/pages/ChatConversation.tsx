@@ -1,7 +1,7 @@
 
 
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Send, Plus, Euro, Check, X } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -322,11 +322,13 @@ const ChatConversation = () => {
                   </div>
                 ) : message.image ? (
                   <div className="max-w-[80%] space-y-3">
-                    <img 
-                      src={message.image} 
-                      alt="Restaurant collaboration" 
-                      className="w-full h-auto rounded-lg shadow-sm"
-                    />
+                    <Link to="/restaurant/don-juan" className="block">
+                      <img 
+                        src={message.image} 
+                        alt="Restaurant collaboration" 
+                        className="w-full h-auto rounded-lg shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:brightness-110"
+                      />
+                    </Link>
                     {message.showOfferOption && (
                       <Button 
                         className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-lg px-6 py-3"
