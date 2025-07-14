@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, Star, Users } from 'lucide-react';
+import { ArrowLeft, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import BottomNavigation from '@/components/BottomNavigation';
 
 const RestaurantDetail = () => {
   const navigate = useNavigate();
@@ -124,31 +125,11 @@ const RestaurantDetail = () => {
         </div>
       </div>
 
-      {/* Bottom Navigation Placeholder */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
-        <div className="flex justify-around items-center max-w-md mx-auto">
-          <div className="w-6 h-6 text-gray-400">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-          </div>
-          <div className="w-6 h-6 text-gray-400">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 21H5V3H13V9H19V21Z"/>
-            </svg>
-          </div>
-          <div className="w-6 h-6 text-gray-400">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 21H5V3H13V9H19V21Z"/>
-            </svg>
-          </div>
-          <div className="w-6 h-6 text-gray-400">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
+      {/* Bottom padding to avoid navigation overlap */}
+      <div className="pb-20"></div>
+
+      {/* Bottom Navigation */}
+      <BottomNavigation />
     </div>
   );
 };
