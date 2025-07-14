@@ -328,7 +328,7 @@ const ChatConversation = () => {
                     />
                     {message.showOfferOption && (
                       <Button 
-                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg px-6 py-3"
+                        className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-lg px-6 py-3"
                         onClick={handleMakeOffer}
                       >
                         <Euro className="w-4 h-4 mr-2" />
