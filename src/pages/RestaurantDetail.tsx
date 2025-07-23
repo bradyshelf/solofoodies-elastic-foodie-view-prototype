@@ -119,6 +119,13 @@ const RestaurantDetail = () => {
           >
             Solicitar colaboración
           </Button>
+
+          <Button 
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-3 rounded-lg text-base"
+            size="lg"
+          >
+            Make an offer
+          </Button>
           
           <p className="text-sm text-green-600 font-medium">
             ¡Quedan {restaurant.campaign.spotsRemaining} plazas disponibles!
