@@ -326,17 +326,17 @@ const ChatConversation = () => {
                       <img 
                         src={message.image} 
                         alt="Restaurant collaboration" 
-                        className="w-full h-auto rounded-lg shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:brightness-110"
+                        className="w-full aspect-square object-cover rounded-lg shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:brightness-110"
                       />
                     </Link>
                     <Button 
-                      className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg px-6 py-3"
+                      className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg px-6 py-1.5"
                     >
                       Solicitar Collaboracion
                     </Button>
                     {message.showOfferOption && (
                       <Button 
-                        className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-lg px-6 py-3"
+                        className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-lg px-6 py-1.5"
                         onClick={handleMakeOffer}
                       >
                         <Euro className="w-4 h-4 mr-2" />
