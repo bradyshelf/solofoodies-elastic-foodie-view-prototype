@@ -31,6 +31,7 @@ interface Message {
   offerStatus?: 'pending' | 'accepted' | 'rejected';
   image?: string;
   showOfferOption?: boolean;
+  showColaborationButton?: boolean;
 }
 
 const ChatConversation = () => {
@@ -43,7 +44,8 @@ const ChatConversation = () => {
       isUser: false,
       timestamp: new Date(Date.now() - 5 * 60 * 1000),
       image: "/lovable-uploads/ac468fcd-a778-4887-97c9-2cb092c93be6.png",
-      showOfferOption: true
+      showOfferOption: true,
+      showColaborationButton: true
     }
   ]);
   const [inputValue, setInputValue] = useState('');
@@ -120,7 +122,7 @@ const ChatConversation = () => {
       // Disable buttons on previous offers and hide offer options
       setMessages(prev => prev.map(msg => 
         msg.type === 'offer' ? { ...msg, showButtons: false } : 
-        msg.showOfferOption ? { ...msg, showOfferOption: false } : msg
+        msg.showOfferOption ? { ...msg, showOfferOption: false, showColaborationButton: false } : msg
       ));
 
       const offerMessage: Message = {
@@ -329,11 +331,13 @@ const ChatConversation = () => {
                         className="w-full h-auto rounded-lg shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:brightness-110"
                       />
                     </Link>
-                    <Button 
-                      className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg px-6 py-3"
-                    >
-                      Solicitar Collaboracion
-                    </Button>
+                    {message.showColaborationButton && (
+                      <Button 
+                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg px-6 py-3"
+                      >
+                        Solicitar Collaboracion
+                      </Button>
+                    )}
                     {message.showOfferOption && (
                       <Button 
                         className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-lg px-6 py-3"
