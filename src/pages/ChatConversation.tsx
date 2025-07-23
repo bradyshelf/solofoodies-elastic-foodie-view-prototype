@@ -321,7 +321,7 @@ const ChatConversation = () => {
                     )}
                   </div>
                 ) : message.image ? (
-                  <div className="max-w-[60%] space-y-3">
+                  <div className="max-w-[40%] space-y-2">
                     <Link to="/restaurant/don-juan" className="block">
                       <img 
                         src={message.image} 
@@ -330,13 +330,13 @@ const ChatConversation = () => {
                       />
                     </Link>
                     <Button 
-                      className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg px-6 py-3"
+                      className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg px-4 py-2 text-sm"
                     >
                       Solicitar Collaboracion
                     </Button>
                     {message.showOfferOption && (
                       <Button 
-                        className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-lg px-6 py-3"
+                        className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium rounded-lg px-4 py-2 text-sm"
                         onClick={handleMakeOffer}
                       >
                         <Euro className="w-4 h-4 mr-2" />
