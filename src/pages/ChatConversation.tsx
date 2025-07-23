@@ -321,7 +321,7 @@ const ChatConversation = () => {
                     )}
                   </div>
                 ) : message.image ? (
-                  <div className="max-w-[25%] space-y-1">
+                  <div className="max-w-[40%] space-y-2">
                     <Link to="/restaurant/don-juan" className="block">
                       <img 
                         src={message.image} 
