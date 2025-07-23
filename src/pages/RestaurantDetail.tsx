@@ -1,15 +1,37 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Users } from 'lucide-react';
+import { ArrowLeft, Users, Euro } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
 import BottomNavigation from '@/components/BottomNavigation';
 
 const RestaurantDetail = () => {
   const navigate = useNavigate();
   const { restaurantId } = useParams();
+  const [showOfferDialog, setShowOfferDialog] = useState(false);
+  const [offerAmount, setOfferAmount] = useState('');
 
   const handleBack = () => {
     console.log('Back button clicked');
     navigate(-1);
+  };
+
+  const handleMakeOffer = () => {
+    setShowOfferDialog(true);
+  };
+
+  const handleSubmitOffer = () => {
+    // Handle offer submission logic here
+    console.log('Offer submitted:', offerAmount);
+    setShowOfferDialog(false);
+    setOfferAmount('');
   };
 
   // Mock restaurant data - in a real app this would come from an API
@@ -123,7 +145,9 @@ const RestaurantDetail = () => {
           <Button 
             className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-3 rounded-lg text-base"
             size="lg"
+            onClick={handleMakeOffer}
           >
+            <Euro className="w-4 h-4 mr-2" />
             Make an offer
           </Button>
           
@@ -138,6 +162,41 @@ const RestaurantDetail = () => {
 
       {/* Bottom Navigation */}
       <BottomNavigation />
+
+      {/* Offer Dialog */}
+      <Dialog open={showOfferDialog} onOpenChange={setShowOfferDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Make an Offer</DialogTitle>
+          </DialogHeader>
+          <div className="flex items-center space-x-2">
+            <Input
+              type="number"
+              step="5"
+              min="0"
+              placeholder="Enter amount"
+              value={offerAmount}
+              onChange={(e) => setOfferAmount(e.target.value)}
+              className="flex-1"
+            />
+            <span className="text-gray-500">€</span>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowOfferDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSubmitOffer}
+              disabled={!offerAmount}
+            >
+              Submit Offer
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
