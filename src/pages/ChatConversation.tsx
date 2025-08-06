@@ -51,11 +51,6 @@ const ChatConversation = () => {
   const [inputValue, setInputValue] = useState('');
   const [showOfferDialog, setShowOfferDialog] = useState(false);
   const [offerAmount, setOfferAmount] = useState('');
-  const [isCounteroffer, setIsCounteroffer] = useState(false);
-  const [maxOfferAmount, setMaxOfferAmount] = useState<number | null>(null);
-  const [lastBotOffer, setLastBotOffer] = useState<number | null>(null);
-  const [showRejectWarning, setShowRejectWarning] = useState(false);
-  const [pendingRejectMessageId, setPendingRejectMessageId] = useState<number | null>(null);
 
   // Mock chat user data - in a real app this would come from an API
   const chatUser = {
@@ -105,15 +100,6 @@ const ChatConversation = () => {
   };
 
   const handleMakeOffer = () => {
-    setIsCounteroffer(false);
-    setMaxOfferAmount(null);
-    setShowOfferDialog(true);
-  };
-
-  const handleCounteroffer = (originalAmount: number) => {
-    setIsCounteroffer(true);
-    setMaxOfferAmount(originalAmount);
-    setOfferAmount(originalAmount.toString());
     setShowOfferDialog(true);
   };
 
@@ -132,40 +118,22 @@ const ChatConversation = () => {
         timestamp: new Date(),
         type: 'offer',
         offerAmount: parseFloat(offerAmount),
-        showButtons: false // User offers don't show buttons
+        showButtons: false
       };
       
       setMessages(prev => [...prev, offerMessage]);
       setOfferAmount('');
       setShowOfferDialog(false);
 
-      // Send automated counter offer after a delay
+      // Send automated response after a delay
       setTimeout(() => {
-        const userOfferAmount = parseFloat(offerAmount);
-        let counterOfferAmount;
-        
-        if (lastBotOffer !== null) {
-          // Calculate halfway point between last bot offer and current user offer
-          counterOfferAmount = (lastBotOffer + userOfferAmount) / 2;
-        } else {
-          // For first offer, start with 70% of user's offer
-          counterOfferAmount = userOfferAmount * 0.7;
-        }
-        
-        // Round to nearest euro
-        counterOfferAmount = Math.round(counterOfferAmount);
-        
-        const counterOffer: Message = {
+        const response: Message = {
           id: Date.now() + 1,
-          text: `Counter offer for ${counterOfferAmount}€`,
+          text: "Thanks for your offer! We'll review it and get back to you soon.",
           isUser: false,
-          timestamp: new Date(),
-          type: 'offer',
-          offerAmount: counterOfferAmount,
-          showButtons: true // Received offers show buttons
+          timestamp: new Date()
         };
-        setMessages(prev => [...prev, counterOffer]);
-        setLastBotOffer(counterOfferAmount);
+        setMessages(prev => [...prev, response]);
       }, 2000);
     }
   };
@@ -182,29 +150,6 @@ const ChatConversation = () => {
     ));
   };
 
-  const handleShowRejectWarning = (messageId: number) => {
-    setPendingRejectMessageId(messageId);
-    setShowRejectWarning(true);
-  };
-
-  const handleConfirmReject = () => {
-    if (pendingRejectMessageId) {
-      handleRejectOffer(pendingRejectMessageId);
-    }
-    setShowRejectWarning(false);
-    setPendingRejectMessageId(null);
-  };
-
-  const handleRejectWarningCounteroffer = () => {
-    setShowRejectWarning(false);
-    if (pendingRejectMessageId) {
-      const message = messages.find(msg => msg.id === pendingRejectMessageId);
-      if (message?.offerAmount) {
-        handleCounteroffer(message.offerAmount);
-      }
-    }
-    setPendingRejectMessageId(null);
-  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
@@ -295,15 +240,9 @@ const ChatConversation = () => {
                         </Button>
                         <Button 
                           className="w-full bg-gray-400 hover:bg-gray-500 text-white font-medium rounded-lg px-6 py-3"
-                          onClick={() => handleShowRejectWarning(message.id)}
+                          onClick={() => handleRejectOffer(message.id)}
                         >
                           Reject
-                        </Button>
-                        <Button 
-                          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg px-6 py-3"
-                          onClick={() => handleCounteroffer(message.offerAmount!)}
-                        >
-                          Counter
                         </Button>
                       </div>
                     ) : message.offerStatus && (
@@ -415,7 +354,7 @@ const ChatConversation = () => {
       <Dialog open={showOfferDialog} onOpenChange={setShowOfferDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>{isCounteroffer ? 'Make a Counteroffer' : 'Make an Offer'}</DialogTitle>
+            <DialogTitle>Make an Offer</DialogTitle>
           </DialogHeader>
           <div className="flex items-center space-x-2">
             <Input
@@ -440,43 +379,6 @@ const ChatConversation = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Reject Warning Dialog */}
-      <Dialog open={showRejectWarning} onOpenChange={setShowRejectWarning}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Reject Offer</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <p className="text-gray-600">
-              This action cannot be undone. Rejecting this offer will end the collaboration opportunity.
-            </p>
-            <p className="text-gray-600">
-              Are you sure you don't want to make a counter offer instead?
-            </p>
-          </div>
-          <DialogFooter className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
-            <Button 
-              variant="outline" 
-              onClick={() => setShowRejectWarning(false)}
-              className="w-full sm:w-auto"
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleRejectWarningCounteroffer}
-              className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white"
-            >
-              Counter Offer
-            </Button>
-            <Button 
-              onClick={handleConfirmReject}
-              className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white"
-            >
-              Reject & End Colab
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
