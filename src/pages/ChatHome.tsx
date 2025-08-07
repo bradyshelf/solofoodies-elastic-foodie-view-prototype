@@ -35,7 +35,11 @@ const ChatHome = () => {
   };
 
   const handleChatClick = (chatId: number) => {
-    navigate(`/chat/${chatId}`);
+    if (chatId === 3) {
+      navigate(`/chat/tip/${chatId}`);
+    } else {
+      navigate(`/chat/${chatId}`);
+    }
   };
 
   const handleDeleteChat = (chatId: number, e: React.MouseEvent) => {

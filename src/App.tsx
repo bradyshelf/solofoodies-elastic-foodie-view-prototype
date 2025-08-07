@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import ChatHome from "./pages/ChatHome";
 import RestaurantDetail from "./pages/RestaurantDetail";
 import ChatConversation from "./pages/ChatConversation";
+import TipNotification from "./pages/TipNotification";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/chat" element={<ChatHome />} />
           <Route path="/restaurant/:restaurantId" element={<RestaurantDetail />} />
+          <Route path="/chat/tip/:chatId" element={<TipNotification />} />
           <Route path="/chat/:chatId" element={<ChatConversation />} />
           <Route path="*" element={<Index />} />
         </Routes>
