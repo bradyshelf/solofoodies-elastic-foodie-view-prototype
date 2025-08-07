@@ -1,99 +1,135 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, Euro } from 'lucide-react';
+import { ArrowLeft, Send, Euro } from 'lucide-react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+interface Message {
+  id: number;
+  text: string;
+  isUser: boolean;
+  timestamp: Date;
+  type?: 'text' | 'tip';
+  tipAmount?: number;
+}
 
 const TipNotification = () => {
   const navigate = useNavigate();
   const { chatId } = useParams();
+  const [messages] = useState<Message[]>([
+    {
+      id: 1,
+      text: "Thank you for the amazing content! Here's a tip for your great work promoting our restaurant.",
+      isUser: false,
+      timestamp: new Date(Date.now() - 5 * 60 * 1000),
+      type: 'tip',
+      tipAmount: 25
+    }
+  ]);
+  const [inputValue, setInputValue] = useState('');
 
-  // Mock data for the tip notification
-  const tipData = {
-    amount: 25,
-    restaurant: {
-      name: "Don Juan Restaurant",
-      username: "@UserInstagram",
-      avatar: "/lovable-uploads/af4f172b-c1c6-4c8b-916f-423ef933eeaa.png"
-    },
-    message: "Thank you for the amazing content! Here's a tip for your great work promoting our restaurant."
+  // Mock chat user data
+  const chatUser = {
+    username: '@UserInstagram',
+    avatar: '/lovable-uploads/af4f172b-c1c6-4c8b-916f-423ef933eeaa.png'
   };
 
   const handleBack = () => {
     navigate('/chat');
   };
 
-  const handleGoToChat = () => {
-    navigate(`/chat/${chatId}`);
+  const handleSendMessage = () => {
+    // This would handle sending new messages
+    console.log('Send message:', inputValue);
+    setInputValue('');
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  const formatTimestamp = (date: Date) => {
+    return date.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: false 
+    });
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
-        <button onClick={handleBack}>
-          <ArrowLeft className="w-6 h-6 text-gray-700" />
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+        <div className="flex items-center space-x-3">
+          <button onClick={handleBack}>
+            <ArrowLeft className="w-6 h-6 text-gray-700" />
+          </button>
+          <Avatar className="w-8 h-8">
+            <AvatarImage src={chatUser.avatar} alt={chatUser.username} />
+            <AvatarFallback>U</AvatarFallback>
+          </Avatar>
+          <span className="font-medium text-gray-900">{chatUser.username}</span>
+        </div>
+        <button>
+          <div className="w-6 h-6 text-gray-400">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="1"/>
+              <circle cx="19" cy="12" r="1"/>
+              <circle cx="5" cy="12" r="1"/>
+            </svg>
+          </div>
         </button>
-        <h1 className="text-lg font-semibold text-gray-900">Tip Received</h1>
-        <div className="w-6 h-6"></div> {/* Spacer for centering */}
       </div>
 
-      {/* Main Content */}
-      <div className="flex-1 p-6">
-        {/* Success Icon */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-12 h-12 text-green-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Tip Received!</h2>
-          <p className="text-gray-600">You've received a tip from the restaurant</p>
-        </div>
-
-        {/* Restaurant Info */}
-        <div className="bg-gray-50 rounded-lg p-4 mb-6">
-          <div className="flex items-center space-x-3 mb-3">
-            <Avatar className="w-12 h-12">
-              <AvatarImage src={tipData.restaurant.avatar} alt={tipData.restaurant.username} />
-              <AvatarFallback>R</AvatarFallback>
-            </Avatar>
-            <div>
-              <h3 className="font-semibold text-gray-900">{tipData.restaurant.name}</h3>
-              <p className="text-sm text-gray-500">{tipData.restaurant.username}</p>
+      {/* Messages Area */}
+      <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+        {messages.map((message) => (
+          <div key={message.id} className="space-y-1">
+            <div className="flex justify-start">
+              {message.type === 'tip' ? (
+                <div className="max-w-[80%] bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Euro className="w-5 h-5 text-yellow-600" />
+                    <span className="font-semibold text-yellow-700">Tip Received: €{message.tipAmount}</span>
+                  </div>
+                  <p className="text-sm text-gray-700">{message.text}</p>
+                </div>
+              ) : (
+                <div className="max-w-[80%] px-4 py-2 rounded-lg bg-gray-200 text-gray-900">
+                  <p className="text-sm">{message.text}</p>
+                </div>
+              )}
+            </div>
+            <div className="flex justify-start">
+              <span className="text-xs text-gray-400 px-2">
+                {formatTimestamp(message.timestamp)}
+              </span>
             </div>
           </div>
-          <p className="text-gray-700 text-sm">{tipData.message}</p>
-        </div>
+        ))}
+      </div>
 
-        {/* Tip Amount */}
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center mb-8">
-          <div className="flex items-center justify-center space-x-2 mb-2">
-            <Euro className="w-8 h-8 text-yellow-600" />
-            <span className="text-4xl font-bold text-yellow-600">{tipData.amount}</span>
-          </div>
-          <p className="text-yellow-700 font-medium">Tip Amount</p>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="space-y-3">
-          <Button 
-            onClick={handleGoToChat}
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg py-3"
+      {/* Input Area */}
+      <div className="p-4 border-t border-gray-200 bg-white">
+        <div className="flex items-center space-x-2">
+          <Input
+            type="text"
+            placeholder="Type a message..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+            className="flex-1 rounded-full border-gray-300 px-4 py-2"
+          />
+          <Button
+            onClick={handleSendMessage}
+            className="bg-green-500 hover:bg-green-600 text-white rounded-full p-2 w-10 h-10"
+            disabled={!inputValue.trim()}
           >
-            Continue Conversation
+            <Send className="w-4 h-4" />
           </Button>
-          <Button 
-            onClick={handleBack}
-            variant="outline"
-            className="w-full font-medium rounded-lg py-3"
-          >
-            Back to Chats
-          </Button>
-        </div>
-
-        {/* Additional Info */}
-        <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-          <p className="text-xs text-blue-700 text-center">
-            This tip will be added to your account balance and can be withdrawn according to our payment terms.
-          </p>
         </div>
       </div>
     </div>
